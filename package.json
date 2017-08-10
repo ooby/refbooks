@@ -1,0 +1,27 @@
+{
+  "name": "refbooks",
+  "version": "0.0.1",
+  "description": "Medical refbooks RUS-14",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests --timeout 30000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ooby/refbooks.git"
+  },
+  "keywords": [
+    "refbooks",
+    "medicine"
+  ],
+  "author": "Afanasy Argunov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ooby/refbooks/issues"
+  },
+  "homepage": "https://github.com/ooby/refbooks#readme",
+  "dependencies": {
+    "mongoose": "^4.11.6",
+    "soap": "^0.20.0"
+  }
+}
