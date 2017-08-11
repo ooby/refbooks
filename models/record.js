@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const recordSchema = new Schema({
-    reflist: { type: Schema.Types.ObjectId, ref: 'Refbook', required: true },
+    _refbook: { type: String, ref: 'Refbook' },
     code: String,
     high: String,
     name: String,
