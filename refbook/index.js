@@ -17,8 +17,7 @@ exports.getRefbookList = async config => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
-        mongoose.connection.close();
-        return rl;
+        return { data: rl, mongoose: mongoose };
     } catch (e) { return e; }
 };
 exports.getRefbook = async (data, config) => {
@@ -30,8 +29,7 @@ exports.getRefbook = async (data, config) => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
-        mongoose.connection.close();
-        return rl;
+        return { data: rl, mongoose: mongoose };
     } catch (e) { return e; }
 };
 exports.sync = async config => {
@@ -94,7 +92,6 @@ exports.sync = async config => {
             } catch (e) { console.error(e); }
             return i;
         }), Promise.resolve());
-        mongoose.connection.close();
-        return result.length;
+        return { data: result, mongoose: mongoose };
     } catch (e) { return e; }
 };
