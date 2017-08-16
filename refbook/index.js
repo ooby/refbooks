@@ -44,7 +44,7 @@ exports.sync = async config => {
         await rl.reduce((p, i) => p.then(async () => {
             try {
                 let d = await Refbook.findOne({ code: i[0].value });
-                if (!d && (i[0].value === 'MDP365' || i[0].value === 'C33001')) {
+                if (!d && (i[0].value === 'C33001' || i[0].value === 'C33002')) {
                     let rf = new Refbook({
                         code: i[0].value,
                         name: i[1].value,
