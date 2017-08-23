@@ -32,6 +32,14 @@ exports.getRefbook = async (data, config) => {
         return { data: rl, mongoose: mongoose };
     } catch (e) { return e; }
 };
+exports.getRefbookByCode = async (code, config) => {
+    try {
+        const mongoose = require('../libs/mongoose')(config);
+        let d = await Refbook.findOne({ code: code });
+        let rl = await Record.find({ _refbook: d._id });
+        return { data: rl, mongoose: mongoose };
+    } catch (e) { return e; }
+};
 exports.sync = async config => {
     try {
         const mongoose = require('../libs/mongoose')(config);
@@ -71,11 +79,11 @@ exports.sync = async config => {
             record = record.map(i => i.map(j => Object.assign({}, { value: j.$value })));
             if (i.code === 'MDP365') {
                 for (let j of record) {
-                    let d = await Record.findOne({ code: j[2].value });
+                    let d = await Record.findOne({ code: j[1].value });
                     if (!d) {
                         let rc = new Record({
                             _refbook: i._id,
-                            code: j[2].value,
+                            code: j[1].value,
                             name: j[3].value
                         });
                         await rc.save();
