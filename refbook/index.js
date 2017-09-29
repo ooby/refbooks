@@ -8,36 +8,33 @@ const composeLib = async (lib) => {
         return lib(client);
     } catch (e) { return e; }
 };
-exports.getRefbookList = async config => {
+exports.getRefbookList = async () => {
     try {
-        const mongoose = require('../libs/mongoose')(config);
         let rias = await composeLib(require('../rias'));
         let rl = await rias.getRefbookList();
         rl = rl.getRefBookListReturn.map(i => i.map.item.map(j => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
-        return { data: rl, mongoose: mongoose };
+        return { data: rl };
     } catch (e) { return e; }
 };
-exports.getRefbook = async (data, config) => {
+exports.getRefbook = async data => {
     try {
-        const mongoose = require('../libs/mongoose')(config);
         let rias = await composeLib(require('../rias'));
         let rl = await rias.getRefbookPartial(data);
         rl = rl.getRefBookPartialReturn.map(i => i.map.item.map(j => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
-        return { data: rl, mongoose: mongoose };
+        return { data: rl };
     } catch (e) { return e; }
 };
-exports.getRefbookByCode = async (code, config) => {
+exports.getRefbookByCode = async code => {
     try {
-        const mongoose = require('../libs/mongoose')(config);
         let d = await Refbook.findOne({ code: code });
         let rl = await Record.find({ _refbook: d._id });
-        return { data: rl, mongoose: mongoose };
+        return { data: rl };
     } catch (e) { return e; }
 };
 exports.sync = async config => {

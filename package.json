@@ -1,6 +1,6 @@
 {
   "name": "refbooks",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Medical refbooks RUS-14",
   "main": "index.js",
   "scripts": {
