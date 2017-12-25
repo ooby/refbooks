@@ -1,47 +1,72 @@
-const { createClient } = require('../libs/soap');
+const mongoose = require('../libs/mongoose');
 const Refbook = require('../models/refbook');
 const Record = require('../models/record');
+const soap = require('soap');
+
+const rias = require('../rias');
+
 const riasUri = 'http://rias.mzsakha.ru/NSIService/services/NsiServiceManagerImpl?wsdl';
-const composeLib = async (lib) => {
-    try {
-        let client = await createClient(riasUri);
-        return lib(client);
-    } catch (e) { return e; }
-};
+
+const createClient = () => soap.createClientAsync(riasUri);
+
 exports.getRefbookList = async () => {
     try {
-        let rias = await composeLib(require('../rias'));
-        let rl = await rias.getRefbookList();
+        let c = await createClient();
+        let rl = await rias(c).getRefbookList();
         rl = rl.getRefBookListReturn.map(i => i.map.item.map(j => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
         return { data: rl };
-    } catch (e) { return e; }
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
 };
+
 exports.getRefbook = async data => {
     try {
-        let rias = await composeLib(require('../rias'));
-        let rl = await rias.getRefbookPartial(data);
+        let c = await createClient();
+        let rl = await rias(c).getRefbookPartial(data);
         rl = rl.getRefBookPartialReturn.map(i => i.map.item.map(j => {
             return Object.assign({}, j.value);
         }));
         rl = rl.map(i => i.map(j => Object.assign({}, { value: j.$value })));
         return { data: rl };
-    } catch (e) { return e; }
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
 };
+
 exports.getRefbookByCode = async code => {
     try {
         let d = await Refbook.findOne({ code: code });
         let rl = await Record.find({ _refbook: d._id });
         return { data: rl };
-    } catch (e) { return e; }
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
 };
+
+exports.getRefbookParts = async data => {
+    try {
+        let c = await createClient();
+        let rl = await rias(c).getRefbookParts(data);
+        rl = rl ? rl.getRefBookPartsReturn : null;
+        return rl;
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
+}
+
 exports.sync = async config => {
     try {
-        const mongoose = require('../libs/mongoose')(config);
-        let rias = await composeLib(require('../rias'));
-        let rl = await rias.getRefbookList();
+        const mongoose = mongoose(config);
+        let c = await createClient();
+        let rl = await rias(c).getRefbookList();
         rl = rl.getRefBookListReturn.map(i => i.map.item.map(j => {
             return Object.assign({}, j.value);
         }));
@@ -104,5 +129,8 @@ exports.sync = async config => {
             }
         }
         return { data: result, mongoose: mongoose };
-    } catch (e) { return e; }
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
 };
