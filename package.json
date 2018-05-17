@@ -1,6 +1,6 @@
 {
   "name": "refbooks",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Medical refbooks RUS-14",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,9 @@
   "homepage": "https://github.com/ooby/refbooks#readme",
   "dependencies": {
     "mongoose": "^4.11.6",
-    "soap": "git+https://github.com/raviolin/node-soap.git#fix-checking-response-body"
+    "soap": "^0.24.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1"
   }
 }
